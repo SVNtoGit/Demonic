@@ -66,7 +66,7 @@ namespace Demonic.GUI
             ShadowfuryUnitCountToCast.Value = Settings.ShadowfuryUnitsInRangeValue;
 
             // Tier 3
-            UseSoulLink.Checked = Settings.UseSoulLink;
+            //UseSoulLink.Checked = Settings.UseSoulLink;
 
             UseSacrificialPact.Checked = Settings.UseSacrificialPact;
             UseSacrificialPactOnlyWhenLossOfControl.Checked = Settings.SacrificialPactOnlyUseOnLossOfControl;
@@ -92,9 +92,9 @@ namespace Demonic.GUI
             UseGrimoireOfSacrifice.Checked = Settings.UseGrimoireOfSacrifice;
 
             // Tier 6
-            ArchimondesVengeanceWhenSomeoneTargetingMeAndHPBelow.Checked = Settings.UseArchimondesVengeanceTargetingMeAndLowHP;
-            ArchimondesVengeanceWhenMyHPBelowValue.Value = Settings.ArchimondesVengeanceLowHPValue;
-            UseArchimondesVengeanceWhenTargetHPPercHigherThanMyHPPercAndTargetingMe.Checked = Settings.UseArchimondesVengeanceTargetHPHigherThanMine;
+            //ArchimondesVengeanceWhenSomeoneTargetingMeAndHPBelow.Checked = Settings.UseArchimondesVengeanceTargetingMeAndLowHP;
+            //ArchimondesVengeanceWhenMyHPBelowValue.Value = Settings.ArchimondesVengeanceLowHPValue;
+            //UseArchimondesVengeanceWhenTargetHPPercHigherThanMyHPPercAndTargetingMe.Checked = Settings.UseArchimondesVengeanceTargetHPHigherThanMine;
             
             
             #endregion
@@ -265,7 +265,7 @@ namespace Demonic.GUI
             Settings.ShadowfuryUnitsInRangeValue = Convert.ToInt16(ShadowfuryUnitCountToCast.Value);
 
             // Tier 3
-            Settings.UseSoulLink = UseSoulLink.Checked;
+            //Settings.UseSoulLink = UseSoulLink.Checked;
 
             Settings.UseSacrificialPact = UseSacrificialPact.Checked;
             Settings.SacrificialPactOnlyUseOnLossOfControl = UseSacrificialPactOnlyWhenLossOfControl.Checked;
@@ -291,11 +291,11 @@ namespace Demonic.GUI
             Settings.UseGrimoireOfSacrifice = UseGrimoireOfSacrifice.Checked;
 
             // Tier 6
-            Settings.UseArchimondesVengeanceTargetingMeAndLowHP =
-                ArchimondesVengeanceWhenSomeoneTargetingMeAndHPBelow.Checked;
-            Settings.ArchimondesVengeanceLowHPValue = Convert.ToInt16(ArchimondesVengeanceWhenMyHPBelowValue.Value);
-            Settings.UseArchimondesVengeanceTargetHPHigherThanMine =
-                UseArchimondesVengeanceWhenTargetHPPercHigherThanMyHPPercAndTargetingMe.Checked;
+            //Settings.UseArchimondesVengeanceTargetingMeAndLowHP =
+            //    ArchimondesVengeanceWhenSomeoneTargetingMeAndHPBelow.Checked;
+            //Settings.ArchimondesVengeanceLowHPValue = Convert.ToInt16(ArchimondesVengeanceWhenMyHPBelowValue.Value);
+            //Settings.UseArchimondesVengeanceTargetHPHigherThanMine =
+            //    UseArchimondesVengeanceWhenTargetHPPercHigherThanMyHPPercAndTargetingMe.Checked;
             
             #endregion
 

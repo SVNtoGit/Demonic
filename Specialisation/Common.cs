@@ -15,6 +15,7 @@ namespace Demonic.Specialisation
 {
     static class Common
     {
+        private delegate WoWUnit UnitSelectionDelegate(object context);
         private static DemonicSettings Settings { get { return DemonicSettings.Instance; } }
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
         private static string _sacrificeAbility;
@@ -58,11 +59,12 @@ namespace Demonic.Specialisation
                 HandleDemonicCircle(),
                 HandleDoomguardOrInfernal(),
                 HandleSoulshatter(),
-                HandlePetAbility(Me.CurrentTarget),
+                new Decorator(ret => Me.CurrentTarget != null && Me.CurrentTarget.IsValid,
+                                    HandlePetAbility(ret => Me.CurrentTarget)),
 
                 // Talents
                 HandleDarkRegeneration(),
-                HandleSoulLink(),
+                //HandleSoulLink(),
                 HandleMortalCoil(),
                 HandleHowlOfTerror(),
                 HandleShadowfury(),
@@ -72,8 +74,8 @@ namespace Demonic.Specialisation
                 HandleBurningRush(),
                 HandleUnboundWill(),
                 HandleGrimoireOfService(),
-                HandleGrimoireOfSacrifice(),
-                HandleArchimondesVengeance()
+                HandleGrimoireOfSacrifice()
+                //HandleArchimondesVengeance()
 
                 );
         }
@@ -235,89 +237,199 @@ namespace Demonic.Specialisation
                 );
         }
 
-        private static Composite HandlePetAbility(WoWUnit unit)
+        //private static Composite HandlePetAbility(UnitSelectionDelegate unit)
+        //{
+        //    return new Decorator(ret => Settings.UseCommandDemon && (Me.GotAlivePet && Me.Pet.Distance <= 40 || Me.HasAura("Grimoire of Sacrifice")) && unit != null,
+        //        new PrioritySelector(
+        //            new Decorator(ret => Me.GotAlivePet,
+        //                new PrioritySelector(
+        //                    //Succubus/Shivarra: Fellash (25s CD) - Knock back all units within 5 yards.
+        //                    Spell.PreventDoubleCastOnGround("Command Demon", 25, on => Me.Location, ret =>
+        //                        (Me.Pet.CreatureFamilyInfo.Id == SpellId.PetId_Shivarra || Me.Pet.CreatureFamilyInfo.Id == SpellId.PetId_Succubus)
+        //                         && unit.DistanceSqr <= 5),
+
+        //                    //Felhunter/Observer:  (24s CD) - Interupt/Silence.
+        //                    Spell.PreventDoubleCast("Command Demon", 24, on => unit, ret =>
+        //                        (Me.Pet.CreatureFamilyInfo.Id == SpellId.PetId_Observer || Me.Pet.CreatureFamilyInfo.Id == SpellId.PetId_Felhunter)
+        //                        && (unit.IsCasting || unit.IsChanneling) && unit.CanInterruptCurrentSpellCast),
+
+        //                    //Voidlord: Disarm (1min CD) - Disarm target for 8 seconds.
+        //                    Spell.PreventDoubleCast("Command Demon", 60, on => unit, ret =>
+        //                         (Me.Pet.CreatureFamilyInfo.Id == SpellId.PetId_Voidlord || Me.Pet.CreatureFamilyInfo.Id == SpellId.PetId_Voidwalker)
+        //                         && !unit.Disarmed
+        //                         && unit.DistanceSqr <= 5
+        //                         && (!unit.IsPlayer || unit.IsPlayer && (unit.Class == WoWClass.DeathKnight
+        //                            || unit.Class == WoWClass.Hunter
+        //                            || unit.Class == WoWClass.Monk
+        //                            || unit.Class == WoWClass.Paladin
+        //                            || unit.Class == WoWClass.Warrior
+        //                            || unit.Class == WoWClass.Shaman
+        //                            || unit.Class == WoWClass.Rogue))),
+
+        //                    //Felguard/Wrathguard: Wrathstorm (45s CD) - Attack all units in 8 yards.
+        //                    Spell.PreventDoubleCast("Command Demon", 45, ret =>
+        //                        (Me.Pet.CreatureFamilyInfo.Id == SpellId.PetId_Felguard || Me.Pet.CreatureFamilyInfo.Id == SpellId.PetId_Wrathguard)
+        //                        && Unit.CachedNearbyAttackableUnits(Me.Pet.Location, 8).Any()),
+
+        //                    //Fel Imp: Cauterize Master (30s CD) - Small damage then heals 12% of HP over 12 seconds.
+        //                    Spell.PreventDoubleCast("Command Demon", 30, ret =>
+        //                        Me.Pet.CreatureFamilyInfo.Id == SpellId.PetId_FelImp
+        //                        && Me.HealthPercent <= 88)
+        //                    )),
+
+        //            new Decorator(ret => Me.HasAura("Grimoire of Sacrifice") /*&& !Spell.SpellOnCooldown(SpellBook.CommandDemon)*/,
+        //                new PrioritySelector(
+
+        //                    new Action(delegate
+        //                    {
+        //                        _sacrificeAbility = GetSacrificeAbility();
+        //                        /*
+        //                        Logger.FailLog("Ability:[{0}] - Icon:[{1}] - MeleeRange[{2}] - Facing[{3}] - Cond[{4}]", 
+        //                            _sacrificeAbility, 
+        //                            Helpers.Lua.GetSpellIconText(SpellBook.CommandDemon), 
+        //                            unit.IsWithinMeleeRange, 
+        //                            Me.IsSafelyFacing(unit, 120f),
+        //                            Unit.CachedNearbyAttackableUnits(Me.Location, 5).Any()); 
+        //                        */
+        //                        return RunStatus.Failure;
+        //                    }),
+
+        //                    //Imp: Singe Magic (10s CD) - Removes 1 harmful effect from target.
+        //                    new Decorator(ret => _sacrificeAbility == "Singe Magic",
+        //                        Spell.PreventDoubleCast("Command Demon", 10, on => Me, ret => Me.GetAllAuras().FirstOrDefault(a => a.IsHarmful && a.Duration > 0 && a.Spell.DispelType == WoWDispelType.Magic) != null)),
+
+        //                    //Voidwalker: Shadow Bulwark (2min CD) - 30% HP for 20 seconds.
+        //                    new Decorator(ret => _sacrificeAbility == "Shadow Bulwark",
+        //                        Spell.PreventDoubleCast("Command Demon", 120, ret => Me.HealthPercent <= 25)),
+
+        //                    //Whiplash (25s CD) - Knock back all enemies in 5 yards.
+        //                    new Decorator(ret => _sacrificeAbility == "Whiplash",
+        //                        Spell.PreventDoubleCastOnGround("Command Demon", 25, loc => Me.Location, ret => Unit.CachedNearbyAttackableUnits(Me.Location, 5).Any())),
+
+        //                    //Spell Lock (24s CD) - Interupt/Silence
+        //                    new Decorator(ret => _sacrificeAbility == "Spell Lock",
+        //                        Spell.PreventDoubleCast("Command Demon", 24, on => unit, ret =>
+        //                            unit.CanInterruptCurrentSpellCast && (unit.IsCasting || unit.IsChanneling))),
+
+        //                    //Pursuit (15s CD - 8-25yd Range) - Charge enemy 
+        //                    new Decorator(ret => _sacrificeAbility == "Pursuit", Spell.PreventDoubleCast("Command Demon", 15, on => unit,
+        //                        ret => unit.Distance >= 15 && unit.Distance <= 25 && Me.MovementInfo.MovingForward && Me.IsSafelyFacing(unit, 120f))))
+
+        //                    ))
+
+        //        );
+        //}
+
+        private static Composite HandlePetAbility(UnitSelectionDelegate unit)
         {
-            return new Decorator(ret => Settings.UseCommandDemon && (Me.GotAlivePet && Me.Pet.Distance <= 40 || Me.HasAura("Grimoire of Sacrifice")) && unit != null,
-                new PrioritySelector(
-                    new Decorator(ret => Me.GotAlivePet,
-                        new PrioritySelector(
-                            //Succubus/Shivarra: Fellash (25s CD) - Knock back all units within 5 yards.
-                            Spell.PreventDoubleCastOnGround("Command Demon", 25, on => Me.Location, ret =>
-                                (Me.Pet.CreatureFamilyInfo.Id == SpellId.PetId_Shivarra || Me.Pet.CreatureFamilyInfo.Id == SpellId.PetId_Succubus)
-                                 && unit.DistanceSqr <= 5),
+            try
+            {
+                return new Decorator(ret => unit != null && unit(ret) != null && unit(ret).IsValid,
+                                     new PrioritySelector(
+                                         new Decorator(
+                                             ret =>
+                                             Me.GotAlivePet && Me.Pet != null && Me.Pet.Distance < 40 && unit(ret).InLineOfSpellSight,
+                                             new PrioritySelector(
 
-                            //Felhunter/Observer:  (24s CD) - Interupt/Silence.
-                            Spell.PreventDoubleCast("Command Demon", 24, on => unit, ret =>
-                                (Me.Pet.CreatureFamilyInfo.Id == SpellId.PetId_Observer || Me.Pet.CreatureFamilyInfo.Id == SpellId.PetId_Felhunter)
-                                && (unit.IsCasting || unit.IsChanneling) && unit.CanInterruptCurrentSpellCast),
+                                                 //Felhunter/Observer:  (24s CD) - Interupt/Silence.
+                                                 Spell.PreventDoubleCast("Spell Lock", 3, on => unit(on),
+                                                            ret => unit != null && unit(ret) != null && unit(ret).IsValid &&
+                                                                   Spell.Lastspellcast != "Fear" &&
+                                                                   !unit(ret).IsPet &&
+                                                                   (unit(ret).IsCasting || unit(ret).IsChanneling) &&
+                                                                   unit(ret).CanInterruptCurrentSpellCast),
+                                                 Spell.PreventDoubleCast("Optical Blast", 3, on => unit(on),
+                                                            ret => unit != null && unit(ret) != null && unit(ret).IsValid &&
+                                                                   Spell.Lastspellcast != "Fear" &&
+                                                                   !unit(ret).IsPet &&
+                                                                   (unit(ret).IsCasting || unit(ret).IsChanneling) &&
+                                                                   unit(ret).CanInterruptCurrentSpellCast),
 
-                            //Voidlord: Disarm (1min CD) - Disarm target for 8 seconds.
-                            Spell.PreventDoubleCast("Command Demon", 60, on => unit, ret =>
-                                 (Me.Pet.CreatureFamilyInfo.Id == SpellId.PetId_Voidlord || Me.Pet.CreatureFamilyInfo.Id == SpellId.PetId_Voidwalker)
-                                 && !unit.Disarmed
-                                 && unit.DistanceSqr <= 5
-                                 && (!unit.IsPlayer || unit.IsPlayer && (unit.Class == WoWClass.DeathKnight
-                                    || unit.Class == WoWClass.Hunter
-                                    || unit.Class == WoWClass.Monk
-                                    || unit.Class == WoWClass.Paladin
-                                    || unit.Class == WoWClass.Warrior
-                                    || unit.Class == WoWClass.Shaman
-                                    || unit.Class == WoWClass.Rogue))),
+                                                 //Voidlord: Disarm (1min CD) - Disarm target for 8 seconds.
+                                                 new Decorator(ret => Me.Pet.CreatureFamilyInfo.Id == SpellId.PetId_Voidlord || Me.Pet.CreatureFamilyInfo.Id == SpellId.PetId_Voidwalker,
+                                                 Spell.PreventDoubleCast("Disarm", 3, on => unit(on), ret =>
+                                                                    unit != null &&
+                                                                    unit(ret) != null &&
+                                                                    unit(ret).IsValid &&
+                                                                   !unit(ret).Disarmed
 
-                            //Felguard/Wrathguard: Wrathstorm (45s CD) - Attack all units in 8 yards.
-                            Spell.PreventDoubleCast("Command Demon", 45, ret =>
-                                (Me.Pet.CreatureFamilyInfo.Id == SpellId.PetId_Felguard || Me.Pet.CreatureFamilyInfo.Id == SpellId.PetId_Wrathguard)
-                                && Unit.CachedNearbyAttackableUnits(Me.Pet.Location, 8).Any()),
+                                                     )),
 
-                            //Fel Imp: Cauterize Master (30s CD) - Small damage then heals 12% of HP over 12 seconds.
-                            Spell.PreventDoubleCast("Command Demon", 30, ret =>
-                                Me.Pet.CreatureFamilyInfo.Id == SpellId.PetId_FelImp
-                                && Me.HealthPercent <= 88)
-                            )),
+                                                 //Felguard Felstorm (45s CD) - Attack all units in 8 yards.
+                                                 Spell.Cast("Felstorm", ret => unit != null && unit(ret) != null && unit(ret).IsValid &&
+                                                                               Me.Pet.GotTarget &&
+                                                                               Me.Pet.CurrentTarget.RelativeLocation
+                                                                                 .Distance(Me.Pet.Location) < 8),
 
-                    new Decorator(ret => Me.HasAura("Grimoire of Sacrifice") /*&& !Spell.SpellOnCooldown(SpellBook.CommandDemon)*/,
-                        new PrioritySelector(
+                                                 //Wrathguard - Wrathstorm (45s CD) - all units in 8 yds
+                                                 Spell.Cast("Wrathstorm",
+                                                            ret => unit != null && unit(ret) != null && unit(ret).IsValid &&
+                                                                   Me.Pet.GotTarget &&
+                                                                   Me.Pet.CurrentTarget.RelativeLocation.Distance(
+                                                                       Me.Pet.Location) < 8),
 
-                            new Action(delegate
-                            {
-                                _sacrificeAbility = GetSacrificeAbility();
-                                /*
-                                Logger.FailLog("Ability:[{0}] - Icon:[{1}] - MeleeRange[{2}] - Facing[{3}] - Cond[{4}]", 
-                                    _sacrificeAbility, 
-                                    Helpers.Lua.GetSpellIconText(SpellBook.CommandDemon), 
-                                    unit.IsWithinMeleeRange, 
-                                    Me.IsSafelyFacing(unit, 120f),
-                                    Unit.CachedNearbyAttackableUnits(Me.Location, 5).Any()); 
-                                */
-                                return RunStatus.Failure;
-                            }),
+                                                 //Fel Imp: Cauterize Master (30s CD) - Small damage then heals 12% of HP over 12 seconds.
+                                                 Spell.Cast("Cauterize Master",
+                                                            ret => unit != null && unit(ret) != null && unit(ret).IsValid && Me.HealthPercent <= 88)
+                                                 )),
 
-                            //Imp: Singe Magic (10s CD) - Removes 1 harmful effect from target.
-                            new Decorator(ret => _sacrificeAbility == "Singe Magic",
-                                Spell.PreventDoubleCast("Command Demon", 10, on => Me, ret => Me.GetAllAuras().FirstOrDefault(a => a.IsHarmful && a.Duration > 0 && a.Spell.DispelType == WoWDispelType.Magic) != null)),
+                                         new Decorator(ret => Me.HasAura("Grimoire of Sacrifice"),
+                                                       new PrioritySelector(
 
-                            //Voidwalker: Shadow Bulwark (2min CD) - 30% HP for 20 seconds.
-                            new Decorator(ret => _sacrificeAbility == "Shadow Bulwark",
-                                Spell.PreventDoubleCast("Command Demon", 120, ret => Me.HealthPercent <= 25)),
+                                                           new Action(delegate
+                                                           {
+                                                               _sacrificeAbility = GetSacrificeAbility().Trim();
+                                                               //Log.PrintNoDuplicate("Sacrifice Ability: {0}", _sacrificeAbility);
+                                                               return RunStatus.Failure;
+                                                           }),
 
-                            //Whiplash (25s CD) - Knock back all enemies in 5 yards.
-                            new Decorator(ret => _sacrificeAbility == "Whiplash",
-                                Spell.PreventDoubleCastOnGround("Command Demon", 25, loc => Me.Location, ret => Unit.CachedNearbyAttackableUnits(Me.Location, 5).Any())),
+                                                           //Imp: Singe Magic (10s CD) - Removes 1 harmful effect from target.
+                                                           new Decorator(ret => _sacrificeAbility == "Singe Magic",
+                                                                         Spell.PreventDoubleCast(132411, 10, on => Me,
+                                                                                         ret =>
+                                                                                         Me.GetAllAuras()
+                                                                                           .FirstOrDefault(
+                                                                                               a =>
+                                                                                               a.IsHarmful &&
+                                                                                               a.Duration > 0 &&
+                                                                                               a.Spell.DispelType ==
+                                                                                               WoWDispelType.Magic) !=
+                                                                                         null)),
 
-                            //Spell Lock (24s CD) - Interupt/Silence
-                            new Decorator(ret => _sacrificeAbility == "Spell Lock",
-                                Spell.PreventDoubleCast("Command Demon", 24, on => unit, ret =>
-                                    unit.CanInterruptCurrentSpellCast && (unit.IsCasting || unit.IsChanneling))),
+                                                           //Voidwalker: Shadow Bulwark (2min CD) - 30% HP for 20 seconds.
+                                                           new Decorator(ret => _sacrificeAbility == "Shadow Bulwark",
+                                                                         Spell.PreventDoubleCast(132413, 120, on => Me,
+                                                                                         ret => Me.HealthPercent <= 25)),
 
-                            //Pursuit (15s CD - 8-25yd Range) - Charge enemy 
-                            new Decorator(ret => _sacrificeAbility == "Pursuit", Spell.PreventDoubleCast("Command Demon", 15, on => unit,
-                                ret => unit.Distance >= 15 && unit.Distance <= 25 && Me.MovementInfo.MovingForward && Me.IsSafelyFacing(unit, 120f))))
+                                                           //Spell Lock (24s CD) - Interupt/Silence
+                                                           new Decorator(ret => _sacrificeAbility == "Spell Lock",
+                                                                         Spell.PreventDoubleCast(132409, 24, on => unit(on), ret =>
+                                                                                                                Spell.Lastspellcast != "Fear" &&
+                                                                                                                 !unit(ret).IsPet &&
+                                                                                                                 (unit(ret).IsCasting || unit(ret).IsChanneling) &&
+                                                                                                                 unit(ret).CanInterruptCurrentSpellCast
+                                                                             )),
 
-                            ))
+                                                           //Pursuit (15s CD - 8-25yd Range) - Charge enemy 
+                                                           new Decorator(ret => _sacrificeAbility == "Pursuit",
+                                                                         Spell.PreventDoubleCast(132410, 15, on => unit(on),
+                                                                                         ret =>
+                                                                                         unit(ret).Distance >= 15 &&
+                                                                                         unit(ret).Distance <= 25 &&
+                                                                                         Me.MovementInfo.MovingForward &&
+                                                                                         Me.IsSafelyFacing(unit(ret),
+                                                                                                           120f))))
 
-                );
+                                             ))
+
+                    );
+            }
+            catch (Exception ex)
+            {
+                Log.Debug("Exception thrown at HandlePet: {0}", ex.ToString());
+                return new PrioritySelector();
+            }
         }
-
 
         #endregion
 

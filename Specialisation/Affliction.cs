@@ -193,9 +193,9 @@ namespace Demonic.Specialisation
                     1,On Boss Or Player
                     2,On Target Low HP
                  */
-                    Spell.Cast("Dark Soul: Misery", ret => Settings.Affliction_DarkSoulMiseryCondition == 0),
-                    Spell.Cast("Dark Soul: Misery", ret => Settings.Affliction_DarkSoulMiseryCondition == 1 && Me.CurrentTarget.IsBossOrPlayer()),
-                    Spell.Cast("Dark Soul: Misery", ret => Settings.Affliction_DarkSoulMiseryCondition == 2 && Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= Settings.Affliction_DarkSoulMiseryLowHPValue)
+                    Spell.Cast("Dark Soul: Misery", ret => Settings.Affliction_DarkSoulMiseryCondition == 0 && !Me.HasAura("Dark Soul: Misery")),
+                    Spell.Cast("Dark Soul: Misery", ret => Settings.Affliction_DarkSoulMiseryCondition == 1 && Me.CurrentTarget.IsBossOrPlayer() && !Me.HasAura("Dark Soul: Misery")),
+                    Spell.Cast("Dark Soul: Misery", ret => Settings.Affliction_DarkSoulMiseryCondition == 2 && Me.CurrentTarget != null && Me.CurrentTarget.HealthPercent <= Settings.Affliction_DarkSoulMiseryLowHPValue && !Me.HasAura("Dark Soul: Misery"))
                     ));
         }
 

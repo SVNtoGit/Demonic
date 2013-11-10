@@ -130,7 +130,6 @@
             this.DarkBargainHPBelowValue = new System.Windows.Forms.NumericUpDown();
             this.label27 = new System.Windows.Forms.Label();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
-            this.UseSoulLink = new System.Windows.Forms.CheckBox();
             this.tal7 = new System.Windows.Forms.PictureBox();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
             this.radShadowfuryCastOnTargetOnCD = new System.Windows.Forms.RadioButton();
@@ -150,9 +149,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.tal17 = new System.Windows.Forms.PictureBox();
             this.groupBox21 = new System.Windows.Forms.GroupBox();
-            this.ArchimondesVengeanceWhenMyHPBelowValue = new System.Windows.Forms.NumericUpDown();
-            this.ArchimondesVengeanceWhenSomeoneTargetingMeAndHPBelow = new System.Windows.Forms.CheckBox();
-            this.UseArchimondesVengeanceWhenTargetHPPercHigherThanMyHPPercAndTargetingMe = new System.Windows.Forms.CheckBox();
             this.tal16 = new System.Windows.Forms.PictureBox();
             this.groupBox19 = new System.Windows.Forms.GroupBox();
             this.GrimoireOfSacrificeTargetLowHPValue = new System.Windows.Forms.NumericUpDown();
@@ -257,6 +253,8 @@
             this.btnCancel = new System.Windows.Forms.Label();
             this.btnLoadFromFile = new System.Windows.Forms.Label();
             this.btnSaveToFile = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabDemonic.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -319,7 +317,6 @@
             this.groupBox22.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tal17)).BeginInit();
             this.groupBox21.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ArchimondesVengeanceWhenMyHPBelowValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tal16)).BeginInit();
             this.groupBox19.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.GrimoireOfSacrificeTargetLowHPValue)).BeginInit();
@@ -1490,7 +1487,7 @@
             // groupBox12
             // 
             this.groupBox12.BackColor = System.Drawing.Color.White;
-            this.groupBox12.Controls.Add(this.UseSoulLink);
+            this.groupBox12.Controls.Add(this.label2);
             this.groupBox12.Controls.Add(this.tal7);
             this.groupBox12.Location = new System.Drawing.Point(31, 190);
             this.groupBox12.Name = "groupBox12";
@@ -1498,16 +1495,6 @@
             this.groupBox12.TabIndex = 0;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Soul Link";
-            // 
-            // UseSoulLink
-            // 
-            this.UseSoulLink.AutoSize = true;
-            this.UseSoulLink.Location = new System.Drawing.Point(47, 37);
-            this.UseSoulLink.Name = "UseSoulLink";
-            this.UseSoulLink.Size = new System.Drawing.Size(114, 17);
-            this.UseSoulLink.TabIndex = 1;
-            this.UseSoulLink.Text = "Auto Cast Soul Link";
-            this.UseSoulLink.UseVisualStyleBackColor = true;
             // 
             // tal7
             // 
@@ -1709,41 +1696,14 @@
             // 
             // groupBox21
             // 
-            this.groupBox21.Controls.Add(this.ArchimondesVengeanceWhenMyHPBelowValue);
-            this.groupBox21.Controls.Add(this.ArchimondesVengeanceWhenSomeoneTargetingMeAndHPBelow);
-            this.groupBox21.Controls.Add(this.UseArchimondesVengeanceWhenTargetHPPercHigherThanMyHPPercAndTargetingMe);
+            this.groupBox21.Controls.Add(this.label1);
             this.groupBox21.Controls.Add(this.tal16);
             this.groupBox21.Location = new System.Drawing.Point(31, 451);
             this.groupBox21.Name = "groupBox21";
             this.groupBox21.Size = new System.Drawing.Size(240, 81);
             this.groupBox21.TabIndex = 0;
             this.groupBox21.TabStop = false;
-            this.groupBox21.Text = "Archimonde\'s Vengeance";
-            // 
-            // ArchimondesVengeanceWhenMyHPBelowValue
-            // 
-            this.ArchimondesVengeanceWhenMyHPBelowValue.Location = new System.Drawing.Point(185, 51);
-            this.ArchimondesVengeanceWhenMyHPBelowValue.Name = "ArchimondesVengeanceWhenMyHPBelowValue";
-            this.ArchimondesVengeanceWhenMyHPBelowValue.Size = new System.Drawing.Size(41, 21);
-            this.ArchimondesVengeanceWhenMyHPBelowValue.TabIndex = 4;
-            // 
-            // ArchimondesVengeanceWhenSomeoneTargetingMeAndHPBelow
-            // 
-            this.ArchimondesVengeanceWhenSomeoneTargetingMeAndHPBelow.Location = new System.Drawing.Point(46, 45);
-            this.ArchimondesVengeanceWhenSomeoneTargetingMeAndHPBelow.Name = "ArchimondesVengeanceWhenSomeoneTargetingMeAndHPBelow";
-            this.ArchimondesVengeanceWhenSomeoneTargetingMeAndHPBelow.Size = new System.Drawing.Size(137, 30);
-            this.ArchimondesVengeanceWhenSomeoneTargetingMeAndHPBelow.TabIndex = 3;
-            this.ArchimondesVengeanceWhenSomeoneTargetingMeAndHPBelow.Text = "Someone Targeting Me And HP Below:";
-            this.ArchimondesVengeanceWhenSomeoneTargetingMeAndHPBelow.UseVisualStyleBackColor = true;
-            // 
-            // UseArchimondesVengeanceWhenTargetHPPercHigherThanMyHPPercAndTargetingMe
-            // 
-            this.UseArchimondesVengeanceWhenTargetHPPercHigherThanMyHPPercAndTargetingMe.Location = new System.Drawing.Point(46, 17);
-            this.UseArchimondesVengeanceWhenTargetHPPercHigherThanMyHPPercAndTargetingMe.Name = "UseArchimondesVengeanceWhenTargetHPPercHigherThanMyHPPercAndTargetingMe";
-            this.UseArchimondesVengeanceWhenTargetHPPercHigherThanMyHPPercAndTargetingMe.Size = new System.Drawing.Size(188, 33);
-            this.UseArchimondesVengeanceWhenTargetHPPercHigherThanMyHPPercAndTargetingMe.TabIndex = 2;
-            this.UseArchimondesVengeanceWhenTargetHPPercHigherThanMyHPPercAndTargetingMe.Text = "Target HP % Higher Than My HP % (And Targeting Me)";
-            this.UseArchimondesVengeanceWhenTargetHPPercHigherThanMyHPPercAndTargetingMe.UseVisualStyleBackColor = true;
+            this.groupBox21.Text = "Archimonde\'s Darkness";
             // 
             // tal16
             // 
@@ -2817,7 +2777,7 @@
             this.tbChaosBoltEmberValue.Size = new System.Drawing.Size(183, 40);
             this.tbChaosBoltEmberValue.TabIndex = 0;
             this.tbChaosBoltEmberValue.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.tbChaosBoltEmberValue.Value = 35;
+            this.tbChaosBoltEmberValue.Value = 30;
             this.tbChaosBoltEmberValue.Scroll += new System.EventHandler(this.tbChaosBoltEmberValue_Scroll);
             // 
             // btnSave
@@ -2887,6 +2847,24 @@
             this.btnSaveToFile.Click += new System.EventHandler(this.btnSaveToFile_Click);
             this.btnSaveToFile.MouseEnter += new System.EventHandler(this.btnSaveToFile_MouseEnter);
             this.btnSaveToFile.MouseLeave += new System.EventHandler(this.btnSaveToFile_MouseLeave);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(103, 37);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(43, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Passive";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(103, 36);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(43, 13);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Passive";
             // 
             // ConfigurationForm
             // 
@@ -2988,7 +2966,7 @@
             this.groupBox22.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tal17)).EndInit();
             this.groupBox21.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.ArchimondesVengeanceWhenMyHPBelowValue)).EndInit();
+            this.groupBox21.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tal16)).EndInit();
             this.groupBox19.ResumeLayout(false);
             this.groupBox19.PerformLayout();
@@ -3213,7 +3191,6 @@
         private System.Windows.Forms.CheckBox UseDarkBargain;
         private System.Windows.Forms.NumericUpDown DarkBargainHPBelowValue;
         private System.Windows.Forms.Label label27;
-        private System.Windows.Forms.CheckBox UseSoulLink;
         private System.Windows.Forms.RadioButton radShadowfuryCastOnTargetOnCD;
         private System.Windows.Forms.RadioButton radShadowfuryCastOnMeWhenUnitCount;
         private System.Windows.Forms.NumericUpDown ShadowfuryUnitCountToCast;
@@ -3222,9 +3199,6 @@
         private System.Windows.Forms.CheckBox UseBurningRush;
         private System.Windows.Forms.CheckBox UseUnboundWill;
         private System.Windows.Forms.Label label29;
-        private System.Windows.Forms.NumericUpDown ArchimondesVengeanceWhenMyHPBelowValue;
-        private System.Windows.Forms.CheckBox ArchimondesVengeanceWhenSomeoneTargetingMeAndHPBelow;
-        private System.Windows.Forms.CheckBox UseArchimondesVengeanceWhenTargetHPPercHigherThanMyHPPercAndTargetingMe;
         private System.Windows.Forms.NumericUpDown GrimoireOfSacrificeTargetLowHPValue;
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.ComboBox cmboGrimoireOfService;
@@ -3290,5 +3264,7 @@
         private System.Windows.Forms.Label lblFuryDisplay;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.LinkLabel linkLabel2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }

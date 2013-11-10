@@ -147,22 +147,22 @@ namespace Demonic.Specialisation
             return new Decorator(ret => Settings.Demonology_UseDarkSoulKnowledge && Me.CurrentTarget != null,
                 new PrioritySelector(
                     new Decorator(ret => Settings.Demonology_DarkSoulKnowledgeCondition == 0,
-                        Spell.Cast("Dark Soul: Knowledge", ret => Me.HasAura("Metamorphosis"))),
+                        Spell.Cast("Dark Soul: Knowledge", ret => Me.HasAura("Metamorphosis") && !Me.HasAura("Dark Soul: Knowledge"))),
 
                     new Decorator(ret => Settings.Demonology_DarkSoulKnowledgeCondition == 1,
-                        Spell.Cast("Dark Soul: Knowledge", ret => Me.HasAura("Metamorphosis") && Me.CurrentTarget.IsBossOrPlayer() && CurrentDemonicFury > Settings.Demonology_FuryCancelValue)),
+                        Spell.Cast("Dark Soul: Knowledge", ret => Me.HasAura("Metamorphosis") && Me.CurrentTarget.IsBossOrPlayer() && CurrentDemonicFury > Settings.Demonology_FuryCancelValue && !Me.HasAura("Dark Soul: Knowledge"))),
 
                     new Decorator(ret => Settings.Demonology_DarkSoulKnowledgeCondition == 2,
-                        Spell.Cast("Dark Soul: Knowledge", ret => Me.HasAura("Metamorphosis") && Me.CurrentTarget.HealthPercent <= Settings.Demonology_DarkSoulKnowledgeLowHPValue)),
+                        Spell.Cast("Dark Soul: Knowledge", ret => Me.HasAura("Metamorphosis") && Me.CurrentTarget.HealthPercent <= Settings.Demonology_DarkSoulKnowledgeLowHPValue && !Me.HasAura("Dark Soul: Knowledge"))),
 
                     new Decorator(ret => Settings.Demonology_DarkSoulKnowledgeCondition == 3,
-                        Spell.Cast("Dark Soul: Knowledge", ret => true)),
+                        Spell.Cast("Dark Soul: Knowledge", ret => Me.HasAura("Dark Soul: Knowledge"))),
 
                     new Decorator(ret => Settings.Demonology_DarkSoulKnowledgeCondition == 4,
-                        Spell.Cast("Dark Soul: Knowledge", ret => Me.CurrentTarget.IsBossOrPlayer() && CurrentDemonicFury > Settings.Demonology_FuryCancelValue)),
+                        Spell.Cast("Dark Soul: Knowledge", ret => Me.CurrentTarget.IsBossOrPlayer() && CurrentDemonicFury > Settings.Demonology_FuryCancelValue && !Me.HasAura("Dark Soul: Knowledge"))),
 
                     new Decorator(ret => Settings.Demonology_DarkSoulKnowledgeCondition == 5,
-                        Spell.Cast("Dark Soul: Knowledge", ret => Me.CurrentTarget.HealthPercent <= Settings.Demonology_DarkSoulKnowledgeLowHPValue))
+                        Spell.Cast("Dark Soul: Knowledge", ret => Me.CurrentTarget.HealthPercent <= Settings.Demonology_DarkSoulKnowledgeLowHPValue && !Me.HasAura("Dark Soul: Knowledge")))
 
                     
                     ));

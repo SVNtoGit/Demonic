@@ -63,19 +63,19 @@ namespace Demonic.Specialisation
                 new Decorator(ret => Settings.Destruction_DarkSoulCondition == 0,
                     Spell.Cast("Dark Soul: Instability",
                         ret => CurrentBurningEmbers >= Settings.Destruction_MinimumEmbersForDarkSoul
-                        && Me.CurrentTarget != null)
+                        && Me.CurrentTarget != null && !Me.HasAura("Dark Soul: Instability"))
                     ),
                 new Decorator(ret => Settings.Destruction_DarkSoulCondition == 1,
                     Spell.Cast("Dark Soul: Instability",
                         ret => CurrentBurningEmbers >= Settings.Destruction_MinimumEmbersForDarkSoul
-                                && Me.CurrentTarget != null 
-                                && Me.CurrentTarget.IsBossOrPlayer())
+                                && Me.CurrentTarget != null
+                                && Me.CurrentTarget.IsBossOrPlayer() && !Me.HasAura("Dark Soul: Instability"))
                     ),
                 new Decorator(ret => Settings.Destruction_DarkSoulCondition == 2,
                     Spell.Cast("Dark Soul: Instability",
                         ret => CurrentBurningEmbers >= Settings.Destruction_MinimumEmbersForDarkSoul
                                 && Me.CurrentTarget != null
-                                && Me.CurrentTarget.HealthPercent <= Settings.Destruction_DarkSoulLowHPValue)
+                                && Me.CurrentTarget.HealthPercent <= Settings.Destruction_DarkSoulLowHPValue && !Me.HasAura("Dark Soul: Instability"))
                     )));
                        
 
@@ -88,7 +88,7 @@ namespace Demonic.Specialisation
                 new Decorator(ret => Me.HasAura(SpellId.FireandBrimstone),
                     new Action(delegate { Me.CancelAura("Fire and Brimstone"); return RunStatus.Failure; })),
 
-                Spell.PreventDoubleCast("Immolate", 2, on => Me.CurrentTarget, ret => NeedImmolate, UseKilJaedensCunningPassive),
+                Spell.PreventDoubleCast("Immolate", 2, on => Me.CurrentTarget, ret => NeedImmolate, false),
 
                 new Decorator(ret => Settings.Destruction_UseAoEAbilities, new PrioritySelector(
                     HavocAoEHandler(),
@@ -96,11 +96,12 @@ namespace Demonic.Specialisation
                     )),
 
                 Spell.CastOnGround(SpellId.RainofFire, ret => Me.CurrentTarget.Location, ret => Settings.Destruction_RoFSingleTarget && RainOfFireConditions),
-                Spell.PreventDoubleCast("Shadowburn", 0.5, on => Me.CurrentTarget, ret => NeedShadowburn, UseKilJaedensCunningPassive),
+                Spell.PreventDoubleCast("Shadowburn", 0.5, on => Me.CurrentTarget, ret => NeedShadowburn, false),
                 Spell.Cast("Conflagrate", ret => !ChaosBoltAura && CurrentBurningEmbers < 3.5),
-                Spell.PreventDoubleCast("Chaos Bolt", 0.5, on => Me.CurrentTarget, ret => NeedChaosBolt, UseKilJaedensCunningPassive),
+                Spell.PreventDoubleCast("Chaos Bolt", 0.5, on => Me.CurrentTarget, ret => NeedChaosBolt, false),
                 Spell.Cast("Conflagrate"),
-                Spell.PreventDoubleCast("Incinerate", 0.5, on => Me.CurrentTarget, ret => !NeedImmolate, UseKilJaedensCunningPassive)
+                Spell.PreventDoubleCast("Incinerate", 0.5, on => Me.CurrentTarget, ret => !NeedImmolate, UseKilJaedensCunningPassive),
+                Spell.Cast("Fel Flame", ret => !UseKilJaedensCunningPassive && Me.IsMoving())
                 );
         }
 
@@ -117,7 +118,7 @@ namespace Demonic.Specialisation
                 RainOfFireAllUnits(),
 
                 Spell.PreventDoubleCast("Fire and Brimstone", 0.5, on => Me, ret => !Me.HasAura(SpellId.FireandBrimstone) && CurrentBurningEmbers > 1, true),
-                Spell.PreventDoubleCast("Immolate", 3, on => Me.CurrentTarget, ret => Me.HasAura(SpellId.FireandBrimstone) && (NeedImmolate || NeedAoEImmolate), UseKilJaedensCunningPassive),
+                Spell.PreventDoubleCast("Immolate", 3, on => Me.CurrentTarget, ret => Me.HasAura(SpellId.FireandBrimstone) && (NeedImmolate || NeedAoEImmolate), false),
                 Spell.PreventDoubleCast("Conflagrate", 0.5, on => Me.CurrentTarget, ret => Me.HasAura(SpellId.FireandBrimstone) && (!NeedAoEImmolate && !NeedImmolate), true),
 
                 // Multi DoT Immolate (for low embers)
@@ -138,7 +139,7 @@ namespace Demonic.Specialisation
                     Spell.PreventDoubleCast("Shadowburn", 0.5, on => BestShadowburnUnit(), ret => BestShadowburnUnit() != null, true)),
 
                 new Decorator(ret => Settings.Destruction_OnlyHavocWithCB && Spell.GetAuraStackCount(SpellId.Havoc, Me.CurrentTarget) == 3 && CurrentBurningEmbers >= 1,
-                    Spell.PreventDoubleCast("Chaos Bolt", 0.5, ret => !Me.CurrentTarget.HasAura("Havoc"), UseKilJaedensCunningPassive))
+                    Spell.PreventDoubleCast("Chaos Bolt", 0.5, ret => !Me.CurrentTarget.HasAura("Havoc"), false))
                 );
 
         }

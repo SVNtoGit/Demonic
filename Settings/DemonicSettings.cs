@@ -479,7 +479,7 @@ namespace Demonic.Settings
         public int Destruction_DarkSoulLowHPValue { get; set; }
 
         // Chaos Bolt
-        [Setting, DefaultValue(3.5)]
+        [Setting, DefaultValue(3.0)]
         public double Destruction_ChaosBoltValue { get; set; }
 
         // AoE

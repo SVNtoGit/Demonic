@@ -53,7 +53,7 @@ namespace Demonic
             // PRINT OUT SETTINGS
             Settings.DemonicSettings.LogSettings();
 
-            Log.Info("Thanks for choosing Demonic [Free Version]! [ {0}]", _currentRotation.Revision.Replace("$", ""));
+            Log.Info("Thanks for choosing Demonic [FREE Version]! [ {0}]", _currentRotation.Revision.Replace("$", ""));
             Log.Info("You are a level {0} {1} ({2})", Me.Level, Me.Race, Me.IsAlliance ? "For the Alliance!" : "For the Horde!");
 
         }
